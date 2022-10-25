@@ -1,0 +1,22 @@
+<%- include('./layout/header.ejs') %>
+<h1>Resend verification Email</h1>
+<form  method="post">
+    <div>
+          <input 
+          type="email" 
+          name="email" 
+          id="email"
+          placeholder="Enter your email"
+          size="40"
+          required
+          >
+    </div>  
+    <br>
+    <div>
+        <button type="submit">Resend</button>
+    </div> 
+</form>
+
+
+<%- include('./layout/footer.ejs') %>
+
