@@ -5,11 +5,13 @@ const userRoute = require('./routes/users');
 const connectDB = require('./config/db');
 const bodyparser = require('body-parser');
 const morgan = require('morgan');
+const adminRoute = require('./routes/admin.routes');
 
 const app = express();
 
 app.set('view engine', 'ejs');
 app.use(morgan('dev'));
+app.use(express.static('public'));
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
 
@@ -24,7 +26,8 @@ app.get('/test', (req, res)=>{
 })
 
 //Routes
-app.use(userRoute)
+app.use('/admin',userRoute)
+app.use(adminRoute)
 
 app.use(clientError)
 app.use(serverError)

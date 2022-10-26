@@ -1,6 +1,8 @@
 const { securePassword, comparePassword } = require("../config/securePassword");
-const user= require("../models/users.model");
+const { getRandomString } = require("../views/utils/generateToken");
 const { sendVerificationEmail } = require("../views/utils/sendVerificationEmail");
+const {sendResetEmail} = require('../views/utils/sendResetEmail');
+const user = require("../models/users.model");
 
 
 
@@ -17,12 +19,15 @@ const { sendVerificationEmail } = require("../views/utils/sendVerificationEmail"
  //load home
  const loadHomePage = async (req, res) => {
     try {
-        res.status(200).render("home");
+        const User = await user.findOne({_id: req.session.userId});
+        console.log(User)
+        
+        res.status(200).render("home", {User});
     } catch (error) {
          res.status(500).send({
             error: error.message
          });
-    } 
+    }  
  } 
 
  //Login page
@@ -168,6 +173,130 @@ const { sendVerificationEmail } = require("../views/utils/sendVerificationEmail"
         }
     }
 
+// Forget password Rendering page
+const loadForgetPasswordPage = async (req, res) => {
+    try {
+        res.render('forget-password');
+    } catch (error) {
+        res.status(500).send({
+            error: error.message
+        });
+    }
+}
+
+// Forget passowrd 
+
+const forgetPassword = async(req, res) => {
+     try {
+        const email = req.body.email;
+         const userData = await user.findOne({email: email});
+
+         if(userData){
+            if(userData.isVerify){
+                const randomString = getRandomString();
+                 await user.updateOne({email: email}, {
+                    $set: {
+                        token: randomString
+                    }
+                })
+                sendResetEmail(userData.name, userData.email, userData.id , randomString)     
+                res.status(200).render('forget-password', {JSON: "Email sent successfully"});
+            } else {
+                res.status(200).render('forget-password', {JSON: "<h1>Please verify your email</h1>"});
+            }
+         }else{
+            res.status(404).send('<h1>Email not found</h1>');
+         }
+        
+     } catch (error) {
+       res.status(500).send({
+          error: error.message
+       })
+    }
+}
+
+// Reset password page
+const loadResetPassword = async (req, res) => {
+    try {
+        const token = req.query.token;
+        const userData = await user.findOne({token: token})
+        if(userData){
+            res.render('reset-password', {userId: userData._id});
+        }
+    } catch (error) {
+        res.status(500).send({
+            error: error.message
+        });
+    }
+} 
+
+// Reset password
+const resetPassword = async (req, res) => {
+    try {
+        const password = req.body.password;
+        const userId = req.body.userId;
+        const hashpassword = await securePassword(password);
+        await user.findByIdAndUpdate(userId, {_id:userId}, {
+            $set: {
+                password: hashpassword,
+                token: ''
+            }
+        })
+        res.redirect('/login');
+    } catch (error) {
+        res.status(500).send({
+            error: error.message
+        });
+    }
+}
+
+// Edit profile page Get
+const loadEditProfile = async (req, res) => {
+    try {
+        const id = req.query.id;
+        const userData = await user.findById({_id: id});
+        if(userData){
+            res.status(200).render('edit', {userData: userData});
+        } else {
+            res.redirect('/home');
+        }
+    } catch (error) {
+        res.status(500).send({
+            error: error.message
+        });
+    }
+}
+
+// Edit profile Post 
+const editUserProfile = async (req, res) => {
+    try {
+        const id = req.body.user_id;
+        console.log(req.body)
+        if(req.file){
+           const UserData = await user.findByIdAndUpdate({_id: id}, {
+                $set: {
+                    name:  req.body.name,
+                    email: req.body.email,
+                    image: req.file.filename // Fixed image part  
+                }
+            });
+        } else {
+            const UserData = await user.findByIdAndUpdate({_id: id}, {
+                $set: {
+                    name: req.body.name,
+                    email: req.body.email,
+                }
+            });
+        }
+
+        res.redirect('/home');
+    } catch (error) {
+        res.status(500).send({
+            error: error.message
+        });
+    }
+}
+ 
 module.exports = {
     loadRegisterPage,
     registerUser,
@@ -177,6 +306,11 @@ module.exports = {
     logOutUser,
     verifyEmail,
     loadResetVerification,
-    resendVerificationEmailLink
-
+    resendVerificationEmailLink,
+    loadForgetPasswordPage,
+    forgetPassword,
+    loadResetPassword,
+    resetPassword,
+    loadEditProfile,
+    editUserProfile
 }

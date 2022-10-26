@@ -1,0 +1,50 @@
+<%- include('./layout/header.ejs') %>
+<h1>Edit Profile</h1>
+<form  method="post" enctype="multipart/form-data">
+   <div>
+        <input 
+        type="text" 
+        name="name" 
+        id="name"
+        value="<%=userData.name%>"
+        placeholder="Enter your name"
+        size="40"
+        required
+        >
+   </div>
+   <br>
+   <input 
+    type="hidden"
+    name="user_id"
+    value="<%=userData._id%>"
+   />
+    <div>
+          <input 
+          type="email" 
+          name="email" 
+          value="<%=userData.email%>"
+          id="email"
+          placeholder="Enter your email"
+          size="40"
+          required
+          >
+    </div>  
+    <br> 
+    <br>
+    <div>
+        <input 
+        type="file"
+        name="image"
+        id="image"
+        required
+        />
+    </div>
+    <br> 
+    <div>
+        <button type="submit">Edit Profile</button>
+    </div>
+        
+</form>
+
+<%- include('./layout/footer.ejs') %>
+

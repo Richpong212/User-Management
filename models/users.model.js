@@ -37,6 +37,10 @@ const {Schema, model} = require('mongoose');
     isVerify:{
       type:Number,
       default:0
+    },
+    token:{
+      type:String, 
+      default: ''
     }
   },
   { timestamps: true }

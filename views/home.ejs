@@ -1,5 +1,19 @@
 <%- include('./layout/header.ejs') %>
-<h1>Welcome home page</h1>
+<h1>User Profile</h1>
+<p><%=User.name%></p>
+<p><%=User.email%></p>
+<img 
+  src="images/users/<%=User.image%>" 
+  alt="<%User.name%>" 
+  height="100"
+  width="100"
+>
+<br>
+<a href="/edit?id=<%=User._id%>">Edit Profile</a>
+<br>
+<br>
 <a href="/logout">logout</a>
+
+<br>
 <%- include('./layout/footer.ejs') %>
 
