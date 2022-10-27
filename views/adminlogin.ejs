@@ -1,0 +1,36 @@
+<%- include('./layout/header.ejs') %>
+<h1>Admin Login</h1>
+<form  method="post">
+    <div>
+        <input 
+        type="email" 
+        name="email" 
+        id="email"
+        placeholder="Enter your email"
+        size="40"
+        required
+        >
+    </div>  
+    <br>
+    <div>
+        <input 
+        type="password" 
+        name="password" 
+        id="password"
+        placeholder="Enter your password"
+        size="40"
+        required
+        > 
+    </div>  
+    <br>
+    <div>
+        <button type="submit">Login</button>
+        <br>
+        <a href="/forget-password">forgot password</a>
+
+    </div> 
+</form>
+
+
+<%- include('./layout/footer.ejs') %>
+

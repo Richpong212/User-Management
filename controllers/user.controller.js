@@ -296,6 +296,25 @@ const editUserProfile = async (req, res) => {
         });
     }
 }
+
+// Delete user
+const deleteUser = async (req, res) => {
+    try {
+        const id = req.query.id;
+        const userData = await user.findByIdAndDelete({_id: id});
+        if(userData){
+            res.redirect('/home');
+        } else {
+            res.json({
+                message: 'User not found'
+            })
+        }
+    } catch (error) {
+        res.status(500).send({
+            error: error.message
+        });
+    }
+}
  
 module.exports = {
     loadRegisterPage,
@@ -312,5 +331,6 @@ module.exports = {
     loadResetPassword,
     resetPassword,
     loadEditProfile,
-    editUserProfile
+    editUserProfile,
+    deleteUser,
 }

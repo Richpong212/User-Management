@@ -1,0 +1,40 @@
+<h1>Welcome to the Dashboard</h1> 
+<a href="/admin/add-newuser">New User</a>
+<br>
+<form action="">
+  <label for="search">Search by name or email</label>
+   <input type="text" id="search" name="search">
+   <button type="submit">search</button>
+</form>
+<br> 
+<% if(users.length > 0){%>
+    <%for(let x = 0; x < users.length; x++){%>
+       <div style="background-color: aliceblue; margin: 1rem;">
+          <img 
+            src="images/users/<%=users[x].image%>" 
+            alt="<%users[x].name%>" 
+            height="100" 
+            width="100"
+          >
+          <p>Name: <%=users[x].name%></p>
+          <p>Email: <%=users[x].email%></p>
+          <%if(users[x].isVerify === 1){%> 
+             <h3>status: Verified</h3>
+          <%} else{%>
+              <h3>status: Not Verified</h3>
+          <% }%>
+          <a href="/admin/edit-user?id=<%=users[x]._id%>">Edit User</a>
+          <a href="/admin/delete-user?id=<%=users[x]._id%>">Delete User</a>
+          <br>
+       </div>
+    <%}%>
+<%}%> 
+<% if(currentPage > 1){%>
+   <a href="?page=<%=prev%>">prev</a>
+<%}%>
+   <% for( let i = 1; i <= totalPages; i++ ){%>
+      <a href="?page=<%=i%>"><%=i%></a>
+   <%}%>
+<% if(currentPage < totalPages){%> 
+   <a href="?page=<%=next%>">next</a>
+<%}%>

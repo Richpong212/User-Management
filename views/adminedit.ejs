@@ -1,0 +1,64 @@
+<%- include('./layout/header.ejs') %>
+<h1>Edit User By Admin</h1>
+<form  method="post" enctype="multipart/form-data">
+    <p><%=userData%></p>
+   <div>
+        <input 
+        type="text" 
+        name="name" 
+        id="name"
+        value="<%=userData.name%>"
+        placeholder="Enter your name"
+        size="40"
+        required
+        >
+   </div>
+   <br>
+    <div>
+          <input 
+          type="email" 
+          name="email"
+          value="<%=userData.email%>"" 
+          id="email"
+          placeholder="Enter your email"
+          size="40"
+          required
+          >
+    </div>  
+    <br>
+    <div>
+       <label for="verify"> Verified: </label> 
+       <input 
+         type="radio"
+         name="verify"
+         value="1"
+         {
+              <% if(userData.isVerify === 1){%>
+                 checked
+              <%}%>
+         } 
+       >
+    </div>
+    <div>
+        <label for="verify"> Not verified: </label> 
+        <input 
+          type="radio"
+          name="verify"
+          value="0"
+            {
+                <% if(userData.isVerify === 0){%>
+                     checked
+                <%}%>
+            }
+        >
+     </div>
+    <br> 
+    <br> 
+    <div>
+        <button type="submit">Update User</button>
+    </div>
+        
+</form>
+
+<%- include('./layout/footer.ejs') %>
+

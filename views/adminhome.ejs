@@ -1,0 +1,19 @@
+<%- include('./layout/header.ejs') %>
+<h1>admin Profile</h1>
+<p><%=admin.name%></p>
+<p><%=admin.email%></p>
+<img 
+  src="images/users/<%=admin.image%>" 
+  alt="<%admin.name%>" 
+  height="100"
+  width="100"
+>
+<br>
+<br>
+<br>
+<a href="/admin/logout">logout</a>
+<br>
+<a href="/admin/admindashboard">Dasboard</a>
+<br> 
+<%- include('./layout/footer.ejs') %>
+

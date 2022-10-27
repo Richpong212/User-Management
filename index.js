@@ -10,6 +10,8 @@ const adminRoute = require('./routes/admin.routes');
 const app = express();
 
 app.set('view engine', 'ejs');
+app.set('views', './views/admin');
+
 app.use(morgan('dev'));
 app.use(express.static('public'));
 app.use(bodyparser.json());
@@ -26,7 +28,8 @@ app.get('/test', (req, res)=>{
 })
 
 //Routes
-app.use('/admin',userRoute)
+app.use(userRoute)
+app.use('/admin',adminRoute)
 app.use(adminRoute)
 
 app.use(clientError)
